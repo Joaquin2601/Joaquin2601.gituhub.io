@@ -1,2 +1,1 @@
-# TEMPORIZADOR
-Organiza tu tiempo de estudio y descanso de forma eficiente. Este temporizador te ayuda a medir tus sesiones, gestionar una lista de tareas y marcar las actividades completadas. Además, ofrece recomendaciones para aprovechar tus pausas, reducir el estrés y mejorar tu concentración y productividad diaria
+
