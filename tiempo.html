@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMPORIZADOR</title>
+    <link rel="icon" href="logo.ico">
+</head>
+<style>
+        *{
+           margin:0;
+           padding:0;
+           text-align: center;  
+        }
+        body{
+            width: 100%;
+            max-width: 100%;
+            margin:auto;
+            background-color: rgb(41, 41, 41);
+        }
+        header{
+            justify-content: space-around;
+            background-color: rgb(123, 123, 185);
+            align-items: flex-end;
+            display: flex;
+        }
+        .box{
+            height: 40px;
+            line-height: 40px;
+            padding:0 50px 0 50px;
+            color:rgb(231, 228, 228);
+            font-size: 15px;
+            border-radius: 15px;
+        }
+        .box:hover{        
+            background-color: rgb(248, 246, 246);
+            color:hsl(10, 64%, 55%);
+            font-size: 15px;
+        }
+        .box a{
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .box a:hover{
+            color:hsl(10, 64%, 55%);
+        }
+        #tiempo{
+            display: block;
+            font-size: 60px;
+            margin-top: 210px;
+            color: white;
+        }
+        .cronometro button{
+          padding:12px 30px;
+          margin:10px; 
+          border-radius:30px;
+          cursor:pointer;
+          font-size:20px;
+          border:none;
+          background-color: rgb(123, 123, 185);
+        }
+       #contenedor h1{
+         top: 60px;
+         left: 40px;
+         position: absolute;
+         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+         color: rgb(186, 177, 167);
+       }
+       #contenedor h2{
+         top: 100px;
+         left: 20px;
+         position: absolute;
+         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+         color:rgb(184, 167, 142);
+       }
+       #formulario-tarea{
+        position: absolute;
+        left:20px;
+        top: 140px;
+       }
+       #lista-tareas{
+          list-style-type: none;
+          padding: 0;
+          flex-direction: column;
+       }
+       #lista-tareas li{
+            margin: 20px;
+            padding:10px;
+            border-radius: 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: rgba(240, 170, 170, 0.3);
+            transition: background-color 0.3s;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+       }
+        #lista-tareas li.completada{
+            text-decoration: line-through;
+            background-color: rgb(123, 123, 185, 0.3);
+        }
+        #nueva-tarea{
+            padding: 8px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        #nueva-tarea::placeholder{
+            color: transparent;
+        }
+        #formulario-tarea button{
+            background-color: rgb(124, 168, 153);
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            padding: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer
+        }
+        #formulario-tarea :hover{
+            background-color: #00d9b5;
+        }
+
+    </style>
+<body>
+    <header>
+        <div id="caja2" class="box">
+           <a href="tiempo.html" >ESTUDIO</a>
+        </div>
+        <div id="caja3" class="box">
+           <a href="tiempo2.html">RECESO</a>
+        </div>
+    </header>
+    <div class="cronometro">
+        <audio id="sonidoClick" src="sonidoClick.mp3.wav"></audio>
+        <div id="tiempo">00:00:00</div>
+        <button class="iniciar" onclick="iniciar(); iniciarConSonido()">iniciar</button>
+        <button class="pausar" onclick="pausar(); pausarConSonido()">pausar</button>
+        <button class="reiniciar" onclick="reiniciar(); reiniciarConSonido()">reiniciar</button>
+    </div>
+    <div id="contenedor">
+        <h1>¡TAREAS!</h1>
+        <h2>Tareas pendientes:</h2>
+        </div>
+                <ul id="lista-tareas">
+                    <!-- Las tareas pendientes se agregarán aquí -->
+                </ul>
+                <form action="" id="formulario-tarea">
+                    <input type="text" id="nueva-tarea" placeholder="Agregar nueva tarea">
+                    <button type="submit">Agregar</button>
+                </form>
+</body>
+<script>
+    let segundos = 0;
+    let minutos = 0;
+    let horas = 0;
+
+    let intervalo; // guardara el identificador del setInterval() para poder pausarlo despues
+
+    function actualizarTiempo(){ //funcion que funciona cada segundo
+
+        segundos++; //aumenta 1 segundo
+        
+        if (segundos == 60){// cuando llegue a 60 segundos aumenta 1 minuto
+            segundos = 0;
+            minutos++;
+        }
+        if(minutos == 60){ //cuando llegue a 60 minutos aumenta 1 hora
+            minutos = 0;
+            horas++;
+        }
+     
+        let h = horas < 10 ? "0" + horas : horas;//agrega un cero cuando el numero es menor que 10
+        let m = minutos < 10 ? "0" + minutos : minutos;//agrega un cero cuando el numero es menor que 10
+        let s = segundos < 10 ? "0" + segundos : segundos;//agrega un cero cuando el numero es menor que 10
+        
+        document.getElementById("tiempo").innerHTML =`${h}:${m}:${s}`;//actualizar el contenido del elemento HTML con id "tiempo"
+    }
+    function iniciar(){
+        clearInterval(intervalo);//evita que se cree varios cronometros al presionar varias veces "iniciar"
+        intervalo = setInterval(actualizarTiempo, 1000); //ejecuta la funcion cada 1000ms(1segundo)
+    }
+    function pausar(){
+        clearInterval(intervalo);
+    }
+    function reiniciar(){
+        clearInterval(intervalo);//evita que se cree varios cronometros al presionar "reiniciar"
+
+        segundos = 0;
+        minutos = 0;
+        horas = 0;//todas estas variables detiene el cronometro y lo regresa a 0
+        
+        document.getElementById("tiempo").innerHTML="00:00:00" //muestra el 00:00:00
+    }
+    function iniciarConSonido(){
+    document.getElementById("sonidoClick").play();
+    }
+    function pausarConSonido(){
+    document.getElementById("sonidoClick").play();
+    }
+
+    function reiniciarConSonido(){
+    document.getElementById("sonidoClick").play();
+ }
+ const listaTareas = document.getElementById("lista-tareas"); //lo usamos para que el valor no cambie y este por defecto
+ const formularioTareas = document.getElementById("formulario-tarea"); //lo usamos para que el valor no cambie y este por defecto
+ const nuevaTareaInput = document.getElementById("nueva-tarea"); //lo usamos para que el valor no cambie y este por defecto
+
+ formularioTareas.addEventListener("submit" , function(e){ //detecta cuando se envia el formulario , cuando el usuario pesiona submit
+ e.preventDefault(); //permite que la pagina se recargue, con una recarga se pierde todo
+ const nuevaTareaTexto = nuevaTareaInput.value.trim(); //leer el texto escrito y obtiene lo que escribe el usuario
+ if(nuevaTareaTexto !==""){ //verifica que no esta vacio 
+    agregarTarea(nuevaTareaTexto);
+    nuevaTareaInput.value = ""; //limpiar la caja de texto
+ }
+});
+function agregarTarea(texto){
+    const li = document.createElement("li");
+    li.textContent = texto; //colocar el texto 
+    li.addEventListener("click", alternarCompletadoTarea);
+    listaTareas.appendChild(li); //agregar la tarea
+function alternarCompletadoTarea(e){ //detectar click en la tarea 
+    e.target.classList.toggle("completada");
+}
+}
+</script>
+</html>

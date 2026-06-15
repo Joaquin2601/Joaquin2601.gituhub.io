@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMPORIZADOR</title>
+    <link rel="icon" href="logo.ico">
+</head>
+<style>
+        *{
+           margin:0;
+           padding:0;
+           text-align: center;  
+        }
+        body{
+            width:100%;
+            max-width: 100%;
+            margin:auto;
+            background-color: rgb(41, 41, 41);
+        }
+        header{
+            justify-content: space-around;
+            background-color: rgb(123, 123, 185);
+            align-items: flex-end;
+            display: flex;
+        }
+
+        .box{
+            height: 40px;
+            line-height: 40px;
+            padding:0 50px 0 50px;
+            color:rgb(10, 10, 10);
+            font-size: 15px;
+            border-radius: 15px;
+        }
+        .box:hover{        
+            background-color: rgb(237, 237, 243);
+            color:hsl(10, 64%, 55%);
+            font-size: 15px;
+        }
+        .box a{
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .box a:hover{
+            color:hsl(10, 64%, 55%);
+        }
+        #tiempo{
+            display: block;
+            font-size: 60px;
+            margin-top: 210px;
+            color: white;
+        }
+        .cronometro button{
+          padding:12px 30px;
+          margin:10px; 
+          border-radius:30px;
+          cursor:pointer;
+          font-size:20px;
+          border:none;
+          background-color: rgb(123, 123, 185);
+        }
+        #pregunta h1{
+            display: flex;
+            color:rgb(180, 175, 175);
+            font-size: 30px;
+            margin:30px;
+            justify-content: center;
+        }
+        h2{
+            color: rgb(80, 153, 102);
+            font-size: 20px;
+            margin-top: 30px;
+        }
+        p{
+            margin:20px;
+            font-size: 18px;
+            color: bisque;
+        }
+        
+        #pregunta button{
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(160, 174, 221);
+        }
+        h3{
+            font-size: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 20px;
+            display: flex;
+            color: antiquewhite;
+            text-align: start;
+            justify-content: center;
+
+        }
+        button{
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(160, 174, 221);
+        }
+    </style>
+<body>
+    <header>
+        <div id="caja2" class="box">
+           <a href="tiempo.html">ESTUDIO</a>
+        </div>
+        <div id="caja3" class="box">
+           <a href="tiempo2.html">RECESO</a>
+        </div>
+        <div id="iconos" class="box">
+            <a href="http:\\www.facebook.com">
+                <img src="Facebook.ico" alt="Facebook" width="20px" height="20x">
+            </a>
+            <a href="http:\\www.instagram.com">
+                <img src="Instragam.ico" alt="Instagram" width="20px" height="20px">
+            </a>
+    </header>
+    <div class="cronometro">
+        <audio id="sonidoClick" src="sonidoClick.mp3.wav"></audio>
+        <div id="tiempo">00:00:00</div>
+        <button class="iniciar" onclick="iniciar(); iniciarConSonido()">iniciar</button>
+        <button class="pausar" onclick="pausar(); pausarConSonido()">pausar</button>
+        <button class="reiniciar" onclick="reiniciar(); reiniciarConSonido()">reiniciar</button>
+    </div>
+    <div id="pregunta">
+        <h1>¿Quieres saber las tecnias para relajar tu mente?</h1>
+        <button class="si" onclick="confirmar()">SI</button>
+        <button class="no" onclick="rechazar()">NO</button>
+        </div>
+        <div id="recomendaciones"></div>
+    </div>
+   <script>
+    let segundos = 0;
+    let minutos = 0;
+    let horas = 0;
+
+    let intervalo; // guardara el identificador del setInterval() para poder pausarlo despues
+
+    function actualizarTiempo(){ //funcion que funciona cada segundo
+
+        segundos++; //aumenta 1 segundo
+        
+        if (segundos == 60){// cuando llegue a 60 segundos aumenta 1 minuto
+            segundos = 0;
+            minutos++;
+        }
+        if(minutos == 60){ //cuando llegue a 60 minutos aumenta 1 hora
+            minutos = 0;
+            horas++;
+        }
+
+        let h = horas < 10 ? "0" + horas : horas;//agrega un cero cuando el numero es menor que 10
+        let m = minutos < 10 ? "0" + minutos : minutos;//agrega un cero cuando el numero es menor que 10
+        let s = segundos < 10 ? "0" + segundos : segundos;//agrega un cero cuando el numero es menor que 10
+        
+        document.getElementById("tiempo").innerHTML =`${h}:${m}:${s}`;//actualizar el contenido del elemento HTML con id "tiempo"
+    }
+    function iniciar(){
+        clearInterval(intervalo);//evita que se cree varios cronometros al presionar varias veces "iniciar"
+        intervalo = setInterval(actualizarTiempo, 1000); //ejecuta la funcion cada 1000ms(1segundo)
+    }
+    function pausar(){
+        clearInterval(intervalo);
+    }
+    function reiniciar(){
+        clearInterval(intervalo);//evita que se cree varios cronometros al presionar "reiniciar"
+
+        segundos = 0;
+        minutos = 0;
+        horas = 0;//todas estas variables detiene el cronometro y lo regresa a 0
+        
+        document.getElementById("tiempo").innerHTML="00:00:00" //muestra el 00:00:00
+ }
+     function iniciarConSonido(){
+    document.getElementById("sonidoClick").play();
+    }
+    function pausarConSonido(){
+    document.getElementById("sonidoClick").play();
+    }
+    function reiniciarConSonido(){
+    document.getElementById("sonidoClick").play();
+    }
+function confirmar(){
+    //muestra las recomendaciones
+    document.getElementById("pregunta").style.display="none";
+
+    document.getElementById("recomendaciones").innerHTML =`
+    <h2>RECOMENDACIONES PARA RELAJAR TU MENTE:</h2>
+
+    <p>
+        1.Minuto 1-2: Respiración profunda<br>
+        2.Minuto 3-5: Música relajante<br>
+        3.Minuto 6-8: Relajación muscular<br>
+        4-Minuto 9-10: Visualización positiva
+    </p>
+    <button onclick="regresar()">VOLVER</button>
+    `;
+}
+function regresar(){
+    document.getElementById("pregunta").style.display="block";//muestra el contenido
+
+    document.getElementById("recomendaciones").innerHTML="";
+}
+function rechazar(){
+     //muestra las recomendaciones al rechazarlo
+     document.getElementById("pregunta").style.display="none"; //oculta el contenido
+
+    document.getElementById("recomendaciones").innerHTML =`
+    <h3>Relajate y permite que tu cuerpo y la mente descansen,
+     ya que reduciras el estrés y mejorará el bienestar.
+     Aunque jugar puede ser entretenido, dedicale unos minutos
+     a la relajación te ayudará a recuperar energía, 
+     mejorar la concentración y mantener una buena salud mental.</h3> 
+
+     <button onclick="regresar()">VOLVER</button>
+    `;
+}
+    </script>
+</body>
+</html>
